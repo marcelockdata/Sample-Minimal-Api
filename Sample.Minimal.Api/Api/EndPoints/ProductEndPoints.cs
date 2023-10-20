@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Minimal.Api.Api.ApiModels;
 using Sample.Minimal.Api.Api.ApiModels.Product;
@@ -15,7 +14,10 @@ public static class ProductEndPoints
 {
     public static void ConfigureProductEndpoints(this WebApplication app)
     {
-        app.MapPost("/api/products", static async (IMediator mediator, [FromBody] CreateProductInput input, CancellationToken cancellationToken)
+        app.MapPost("/api/products", 
+            static async (IMediator mediator, 
+                [FromBody] CreateProductInput input, 
+                CancellationToken cancellationToken)
             =>
         {
             var output = await mediator.Send(input, cancellationToken);
@@ -27,7 +29,10 @@ public static class ProductEndPoints
         .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
         .Produces<ProblemDetails>(StatusCodes.Status422UnprocessableEntity);
 
-        app.MapGet("/api/products/{id:guid}", static async (IMediator mediator, [FromRoute] Guid id, CancellationToken cancellationToken)
+        app.MapGet("/api/products/{id:guid}", 
+            static async (IMediator mediator, 
+                [FromRoute] Guid id, 
+                CancellationToken cancellationToken)
            =>
         {
             var output = await mediator.Send(new GetProductInput(id), cancellationToken);
@@ -40,9 +45,9 @@ public static class ProductEndPoints
 
         app.MapPut("/api/products/{id:guid}",
             static async (IMediator mediator,
-                   [FromBody] UpdateProductApiInput apiInput,
-                   [FromRoute] Guid id,
-                   CancellationToken cancellationToken)
+                [FromBody] UpdateProductApiInput apiInput,
+                [FromRoute] Guid id,
+                CancellationToken cancellationToken)
           =>
         {
             var input = new UpdateProductInput(
@@ -60,7 +65,10 @@ public static class ProductEndPoints
       .Produces<ApiResponse<UpdateProductOutput>>(StatusCodes.Status200OK)
       .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
 
-        app.MapDelete("/api/products/{id:guid}", static async (IMediator mediator, [FromRoute] Guid id, CancellationToken cancellationToken)
+        app.MapDelete("/api/products/{id:guid}", 
+            static async (IMediator mediator, 
+                [FromRoute] Guid id, 
+                CancellationToken cancellationToken)
           =>
         {
             var output = await mediator.Send(new DeleteProductInput(id), cancellationToken);
@@ -71,8 +79,9 @@ public static class ProductEndPoints
       .Produces(StatusCodes.Status204NoContent)
       .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
 
-
-        app.MapGet("/api/products", static async (IMediator mediator, CancellationToken cancellationToken)
+        app.MapGet("/api/products", 
+            static async (IMediator mediator, 
+                CancellationToken cancellationToken)
           =>
         {
             var output = await mediator.Send(new GetProductAllInput(), cancellationToken);
