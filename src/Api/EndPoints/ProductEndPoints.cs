@@ -90,6 +90,6 @@ public static class ProductEndPoints
         })
       .WithName("GetProductAll")
       .Produces<ApiResponseList<GetProductAllOutput>>(StatusCodes.Status200OK)
-      .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+      .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
     }
 }
